@@ -1,9 +1,12 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import Articles from "../ui/admin/articles";
+import { ArticlesSkeleton } from "@/app/ui/skeletons";
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
-      <section className="mx-auto max-w-screen-xl p-4">
+      <section className="p-4">
         <article className="flex items-center gap-4">
           <h1 className="text-2xl font-bold">Admin Page</h1>
           <Link
@@ -13,6 +16,11 @@ export default function Page() {
             Create article +
           </Link>
         </article>
+      </section>
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Suspense fallback={<ArticlesSkeleton />}>
+          <Articles />
+        </Suspense>
       </section>
     </>
   );

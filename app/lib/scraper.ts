@@ -21,9 +21,8 @@ export async function getArticleText(url: string) {
     const article = reader.parse();
 
     // Return the text content of the article
-    return article ? article.textContent.trim() : "";
+    return { success: true, text: article ? article.textContent : "", error: null };
   } catch (error) {
-    console.error("Error extracting article:", error);
-    throw new Error("Failed to scrape the website.");
+    return { success: false, text: "", error: "Failed to scrape the website." };
   }
 }

@@ -21,15 +21,15 @@ model User {
   role      Role      @default(USER)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  articles  Article[]
+  // articles  Article[]
 }
 
 model Article {
   id        String   @id @default(cuid())
-  title     String
+  title     String   @unique
   content   String
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  // authorId  String
+  // author    User     @relation(fields: [authorId], references: [id])
   status    Status   @default(DRAFT)
   sources   Source[]
   createdAt DateTime @default(now())
@@ -39,8 +39,7 @@ model Article {
 model Source {
   id        String   @id @default(cuid())
   url       String
-  title     String
-  content   String
+  text   String
   createdAt DateTime @default(now())
   articleId String
   article   Article  @relation(fields: [articleId], references: [id])
