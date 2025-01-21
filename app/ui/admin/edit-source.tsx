@@ -2,9 +2,9 @@
 
 import { Source } from "@prisma/client";
 import Button from "@/app/ui/Button";
-import { scrapeWebsite } from "@/app/lib/actions";
-import { Dispatch, SetStateAction, useState } from "react";
-import { SourceSkeleton } from "../skeletons";
+import { deleteSource, saveSource, scrapeWebsite } from "@/app/lib/actions";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { LoaderCircle, LoaderPinwheel } from "lucide-react";
 
 type EditType = {
   source: Source;
@@ -21,25 +21,45 @@ export default function EditSource({ source, index, setSources }: EditType) {
     );
   };
 
-  const handleScrapeWebsite = async () => {
-    setLoading(true);
+  const handleSaveSource = async () => {
     try {
-      const article = await scrapeWebsite(source.url);
-      if (article.success) {
-        updateSource(index, { text: article.text });
+      setLoading(true);
+      const result = await saveSource(source);
+      if (result) {
+        updateSource(index, { ...result });
       } else {
-        console.log(article.error);
+        console.error("Failed to save source");
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteSource = async () => {};
+  const handleScrapeWebsite = async () => {
+    try {
+      setLoading(true);
+      const article = await scrapeWebsite(source.url);
+      if (article.success) {
+        updateSource(index, { text: article.text });
+      } else {
+        console.error(article.error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) {
-    return <SourceSkeleton />;
-  }
+  const handleDeleteSource = async () => {
+    try {
+      setLoading(true);
+      const result = await deleteSource(source);
+      if (result) {
+        setSources((prev) => prev.filter((_, i) => i !== index));
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -52,32 +72,51 @@ export default function EditSource({ source, index, setSources }: EditType) {
           id={`source-url-${index}`}
           className="w-full rounded-3xl border-2 p-2"
           onChange={(e) => updateSource(index, { url: e.target.value })}
+          disabled={loading}
         />
       </label>
 
       <label htmlFor={`source-text-${index}`} className="block">
         <h2>Source {index + 1} text:</h2>
-        <textarea
-          value={source.text}
-          id={`source-text-${index}`}
-          rows={20}
-          className="w-full rounded-l-3xl border-2 p-2"
-          onChange={(e) => updateSource(index, { text: e.target.value })}
-        />
+        <div className="relative">
+          <textarea
+            value={source.text}
+            id={`source-text-${index}`}
+            rows={20}
+            className="block w-full rounded-l-3xl border-2 p-2"
+            onChange={(e) => updateSource(index, { text: e.target.value })}
+            disabled={loading}
+          />
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center rounded-l-3xl hover:cursor-not-allowed bg-sky-900/15">
+              <LoaderPinwheel className="animate-spin" height="50px" width="50px" />{" "}
+            </div>
+          )}
+        </div>
       </label>
 
-      <div className="flex gap-4">
+      <div className="mt-2 flex gap-4">
         <Button
           type="button"
+          disabled={loading}
+          onClick={handleSaveSource}
+          className={`bg-dark-primary text-light-primary ${loading ? "hover:cursor-not-allowed" : "hover:border-dark-secondary hover:bg-dark-secondary"}`}
+        >
+          Save source
+        </Button>
+        <Button
+          type="button"
+          disabled={loading}
           onClick={handleScrapeWebsite}
-          className="bg-dark-primary text-light-primary hover:bg-dark-secondary hover:border-dark-secondary"
+          className={`bg-dark-primary text-light-primary ${loading ? "hover:cursor-not-allowed" : "hover:border-dark-secondary hover:bg-dark-secondary"}`}
         >
           Scrape URL
         </Button>
         <Button
           type="button"
-          onClick={deleteSource}
-          className="hover:bg-danger hover:text-light-primary hover:border-danger"
+          disabled={loading}
+          onClick={handleDeleteSource}
+          className={`${loading ? "hover:cursor-not-allowed" : "hover:border-danger hover:bg-danger hover:text-light-primary"}`}
         >
           Delete source
         </Button>

@@ -2,6 +2,8 @@
 
 import { getArticleText } from "@/app/lib/scraper";
 import { prisma } from "@/app/db/prisma";
+import { Source } from "@prisma/client";
+import { createSource, deleteSourceById, findSource, updateSource } from "@/app/db/queries";
 
 export const fetchFilteredArticles = async () => {
   await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -47,6 +49,22 @@ export const createNews = async (prevState: unknown, formData: FormData) => {
 
   // redirect("/admin");
 };
+
+export async function saveSource(source: Source) {
+  const existingSource = await findSource(source.id);
+  if (existingSource) {
+    return await updateSource(source);
+  } else {
+    return await createSource(source);
+  }
+}
+
+export async function deleteSource(source: Source) {
+  const existingSource = await findSource(source.id);
+  if (existingSource) {
+    return await deleteSourceById(source.id);
+  }
+}
 
 export async function scrapeWebsite(url: string) {
   return await getArticleText(url);

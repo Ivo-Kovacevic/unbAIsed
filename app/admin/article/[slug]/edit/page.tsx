@@ -40,7 +40,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       </div>
 
       <Suspense fallback={<SourcesSkeleton />}>
-        <EditSources articleSources={article.sources} />
+        <EditSources article={article} />
       </Suspense>
     </form>
   );
