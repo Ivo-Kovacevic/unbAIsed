@@ -30,11 +30,11 @@ export default async function Articles() {
           <p className="text-sm">Created at: {article.createdAt.toLocaleDateString()}</p>
           <p className="text-sm">Updated at: {article.updatedAt.toLocaleDateString()}</p>
           <div className="mt-auto flex items-center justify-around">
-            <Link href={`admin/article/${article.title}`}
+            <Link href={`admin/article/${article.id}`}
               className="w-24 rounded-full border-2 border-neutral-900 bg-neutral-900 px-4 py-2 text-center text-white transition-colors hover:border-neutral-700 hover:bg-neutral-700"
               >View</Link>
             <Link
-              href={`admin/article/${article.title}/edit`}
+              href={`/admin/article/${article.id}/edit`}
               className="w-24 rounded-full border-2 border-neutral-900 bg-neutral-900 px-4 py-2 text-center text-white transition-colors hover:border-neutral-700 hover:bg-neutral-700"
             >
               Edit

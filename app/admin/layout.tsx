@@ -7,14 +7,14 @@ export default function layout({ children }: { children: React.ReactNode }) {
         <nav className="mx-auto max-w-screen-xl p-4">
           <ul className="flex justify-between">
             <li>
-              <a href="/" className="font-bold">
+              <Link href="/admin" className="font-bold">
                 unbAIsed
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="/admin" className="hover:underline">
+              <Link href="/admin" className="hover:underline">
                 Admin Home
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

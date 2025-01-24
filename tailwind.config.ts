@@ -14,6 +14,8 @@ export default {
         "dark-primary": "var(--darkPrimary)",
         "dark-secondary": "var(--darkSecondary)",
         danger: "var(--danger)",
+        pending: "var(--pending)",
+        good: "var(--good)",
       },
     },
   },

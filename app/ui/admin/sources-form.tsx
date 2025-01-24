@@ -1,26 +1,23 @@
 "use client";
 
-import { Source, Status } from "@prisma/client";
-import { Suspense, useEffect, useState } from "react";
-import EditSource from "./edit-source";
+import { Status, Source, Article as PrismaArticle, Article } from "@prisma/client";
+import { Dispatch, SetStateAction, Suspense, useEffect, useState } from "react";
+import SourceForm from "./source-form";
 import Button from "../Button";
 import { scrapeAllWebsites } from "@/app/lib/actions";
 import { SourceSkeleton, SourcesSkeleton } from "../skeletons";
 import { v4 as uuid } from "uuid";
+import { isValidURL } from "@/app/lib/utils";
+import { useParams } from "next/navigation";
 
-type Article = {
-  id: string;
-  title: string;
-  text: string;
-  status: Status;
-  createdAt: Date;
-  updatedAt: Date;
-  sources: Source[];
+type SourcesForm = {
+  sources: Source[],
+  setSources: Dispatch<SetStateAction<Source[]>>
 };
 
-export default function EditSources({ article }: { article: Article }) {
+export default function SourcesForm({ sources, setSources }: SourcesForm) {
+  const { id: articleId } = useParams<{ id: string}>();
   const [loading, setLoading] = useState(false);
-  const [sources, setSources] = useState(article.sources);
 
   const handelScrapeAllWebsites = async () => {
     try {
@@ -50,10 +47,12 @@ export default function EditSources({ article }: { article: Article }) {
         url: "",
         text: "",
         createdAt: new Date(),
-        articleId: article.id,
+        articleId: articleId ? articleId : "new-article",
       },
     ]);
   };
+
+  const allURLsValid = sources.every((source) => isValidURL(source.url)) && sources.length > 0;
 
   if (loading) {
     return <SourcesSkeleton />;
@@ -64,7 +63,7 @@ export default function EditSources({ article }: { article: Article }) {
       <div className="grid gap-4 lg:grid-cols-2">
         {sources.map((source, index) => (
           <Suspense key={source.id} fallback={<SourceSkeleton />}>
-            <EditSource source={source} index={index} setSources={setSources} />
+            <SourceForm source={source} index={index} setSources={setSources} />
           </Suspense>
         ))}
       </div>
@@ -79,11 +78,14 @@ export default function EditSources({ article }: { article: Article }) {
         <Button
           type="button"
           onClick={handelScrapeAllWebsites}
-          className="bg-dark-primary text-light-primary hover:border-dark-secondary hover:bg-dark-secondary"
+          className={`bg-dark-primary text-light-primary ${allURLsValid ? "hover:border-dark-secondary hover:bg-dark-secondary" : "hover:cursor-not-allowed"}`}
+          disabled={!allURLsValid}
         >
           Scrape all URLs
         </Button>
       </div>
+
+      <input type="hidden" name="noOfSources" value={sources.length} />
     </>
   );
 }

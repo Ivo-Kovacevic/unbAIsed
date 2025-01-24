@@ -1,10 +1,3 @@
-export type Source = {
-  id: string;
-  url: string;
-  text: string;
-  isLoading: boolean;
-  error: string | null;
-};
 
 export type FormData = {
   title: string;
@@ -12,11 +5,11 @@ export type FormData = {
   sources: {url: string; text: string}[];
 };
 
-export type State = {
-  errors?: {
-    articleTitle?: string[];
-    articleText?: string[];
-    sources?: string[];
-  };
-  message?: string | null;
-};
+export type NewArticle = {
+  id?: string;
+  title: string;
+  text: string;
+  status: Status;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
