@@ -4,19 +4,19 @@ import { Status, Source, Article as PrismaArticle, Article } from "@prisma/clien
 import { Dispatch, SetStateAction, Suspense, useEffect, useState } from "react";
 import SourceForm from "./source-form";
 import Button from "../Button";
-import { scrapeAllWebsites } from "@/app/lib/actions";
+import { scrapeAllWebsites } from "@/lib/actions";
 import { SourceSkeleton, SourcesSkeleton } from "../skeletons";
 import { v4 as uuid } from "uuid";
-import { isValidURL } from "@/app/lib/utils";
+import { isValidURL } from "@/lib/utils";
 import { useParams } from "next/navigation";
 
 type SourcesForm = {
-  sources: Source[],
-  setSources: Dispatch<SetStateAction<Source[]>>
+  sources: Source[];
+  setSources: Dispatch<SetStateAction<Source[]>>;
 };
 
 export default function SourcesForm({ sources, setSources }: SourcesForm) {
-  const { id: articleId } = useParams<{ id: string}>();
+  const { id: articleId } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(false);
 
   const handelScrapeAllWebsites = async () => {

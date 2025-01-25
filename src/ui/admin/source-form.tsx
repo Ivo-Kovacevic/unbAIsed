@@ -1,11 +1,11 @@
 "use client";
 
 import { Source } from "@prisma/client";
-import Button from "@/app/ui/Button";
-import { deleteSource, scrapeWebsite } from "@/app/lib/actions";
+import Button from "@/ui/Button";
+import { deleteSource, scrapeWebsite } from "@/lib/actions";
 import { Dispatch, SetStateAction, useState } from "react";
 import { LoaderPinwheel } from "lucide-react";
-import { isValidURL } from "@/app/lib/utils";
+import { isValidURL } from "@/lib/utils";
 
 type EditType = {
   source: Source;
@@ -91,7 +91,7 @@ export default function SourceForm({ source, index, setSources }: EditType) {
         >
           Scrape URL
         </Button>
-        
+
         <Button
           type="button"
           disabled={loading}

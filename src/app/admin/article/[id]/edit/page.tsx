@@ -1,5 +1,5 @@
-import { fetchArticleById, fetchSourcesByArticleId } from "@/app/lib/actions";
-import Form from "@/app/ui/admin/edit-form";
+import { fetchArticleById, fetchSourcesByArticleId } from "@/lib/actions";
+import Form from "@/ui/admin/edit-form";
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -11,5 +11,5 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     return;
   }
 
-  return <Form props={{article, sources}} />;
+  return <Form props={{ article, sources }} />;
 }

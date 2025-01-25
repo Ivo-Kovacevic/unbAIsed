@@ -1,7 +1,13 @@
 import Link from "next/link";
 import { Suspense } from "react";
-import Articles from "../ui/admin/articles";
-import { ArticlesSkeleton } from "@/app/ui/skeletons";
+import Articles from "../../ui/admin/articles";
+import { ArticlesSkeleton } from "@/ui/skeletons";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "unbAIsed - Admin panel",
+  description: "Manage articles.",
+};
 
 export default async function Page() {
   return (

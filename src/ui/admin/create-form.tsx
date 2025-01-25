@@ -2,7 +2,7 @@
 
 import { Suspense, useActionState, useState } from "react";
 import { Source, Status } from "@prisma/client";
-import { newArticle } from "@/app/lib/actions";
+import { newArticle } from "@/lib/actions";
 import SourcesForm from "./sources-form";
 import Button from "../Button";
 import { SourcesSkeleton } from "../skeletons";
@@ -16,7 +16,7 @@ export default function Form() {
       <div>
         <div className="flex items-center gap-2">
           <h1 className="mr-auto text-3xl font-bold">ARTICLE</h1>
-          <div className="bg-pending border-pending rounded-full border-2 px-4 py-2 text-white">
+          <div className="rounded-full border-2 border-pending bg-pending px-4 py-2 text-white">
             DRAFT
           </div>
           <Button className="bg-dark-primary text-light-primary hover:border-dark-secondary hover:bg-dark-secondary">

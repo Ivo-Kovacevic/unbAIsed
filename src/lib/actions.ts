@@ -1,7 +1,7 @@
 "use server";
 
-import { getArticleText } from "@/app/lib/scraper";
-import { prisma } from "@/app/db/prisma";
+import { prisma } from "@/db/prisma";
+import { getArticleText } from "@/lib/scraper";
 import { Article, Source } from "@prisma/client";
 import {
   createArticle,
@@ -12,9 +12,8 @@ import {
   updateArticle,
   updateSource,
   deleteSourceById,
-} from "@/app/db/queries";
+} from "@/db/queries";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
 
 export async function newArticle(prevState: unknown, formData: FormData) {
   const title = formData.get("article-title") as string;

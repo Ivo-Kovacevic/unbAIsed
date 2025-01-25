@@ -1,4 +1,4 @@
-import { fetchArticleById, fetchSourcesByArticleId } from "@/app/lib/actions";
+import { fetchArticleById, fetchSourcesByArticleId } from "@/lib/actions";
 import { Status } from "@prisma/client";
 import Link from "next/link";
 
@@ -19,7 +19,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           <div className="flex items-center gap-2">
             <h1 className="mr-auto text-3xl font-bold">ARTICLE</h1>
             <div
-              className={`rounded-full border-2 px-4 py-2 text-center text-white ${article.status === Status.DRAFT ? "bg-pending border-pending" : "bg-good border-good"}`}
+              className={`rounded-full border-2 px-4 py-2 text-center text-white ${article.status === Status.DRAFT ? "border-pending bg-pending" : "border-good bg-good"}`}
             >
               {article.status}
             </div>
